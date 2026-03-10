@@ -104,7 +104,7 @@ def available_moves(board: Board, x: int, y: int) -> List[Position]:
 
     return moves
 
-def play(board: Board):
+def play(board: Board, mode: str = 'default'):
     moves: List[Position] = []
     knight = Knight()
 
@@ -119,8 +119,10 @@ def play(board: Board):
     available = available_moves(board, x, y)
 
     while available:
-        x, y = available[0]
-
+        if mode == 'default':
+            x, y = available[0]
+        elif mode == 'random':
+            x, y = random.choice(available)
         knight.move(board, x, y)
         knight.log_moves(moves, x, y)
 
@@ -146,5 +148,5 @@ def print_board(board: Board, moves: List[Position]) -> None:
 
 
 board = make_board(5, 5)
-final_board, moves = play(board)
+final_board, moves = play(board, 'random')
 print_board(final_board, moves)
