@@ -123,6 +123,23 @@ def play(board: Board, mode: str = 'default'):
             x, y = available[0]
         elif mode == 'random':
             x, y = random.choice(available)
+        elif mode == 'warnsdorff':
+            best_move = min(
+                available,
+                key=lambda move: len(available_moves(board, move[0], move[1]))
+            )
+            x, y = best_move
+        elif mode == 'warnsdorff_random':
+            scored_moves = [
+            (move, len(available_moves(board, move[0], move[1])))
+            for move in available
+            ]
+
+            min_score = min(score for _, score in scored_moves)
+            best_moves = [move for move, score in scored_moves if score == min_score]
+
+            x, y = random.choice(best_moves)
+            
         knight.move(board, x, y)
         knight.log_moves(moves, x, y)
 
@@ -148,5 +165,5 @@ def print_board(board: Board, moves: List[Position]) -> None:
 
 
 board = make_board(5, 5)
-final_board, moves = play(board, 'random')
+final_board, moves = play(board, 'warnsdorff')
 print_board(final_board, moves)
