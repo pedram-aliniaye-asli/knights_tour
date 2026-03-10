@@ -1,5 +1,7 @@
 from typing import List, Dict, Tuple
 import random
+import sys
+
 
 Board = Dict[Tuple[int, int], int]
 Position = Tuple[int, int]
@@ -139,7 +141,9 @@ def play(board: Board, mode: str = 'default'):
             best_moves = [move for move, score in scored_moves if score == min_score]
 
             x, y = random.choice(best_moves)
-            
+        else:
+            print('Unknown method')
+            exit()
         knight.move(board, x, y)
         knight.log_moves(moves, x, y)
 
@@ -164,6 +168,17 @@ def print_board(board: Board, moves: List[Position]) -> None:
         print(" ".join(row))
 
 
-board = make_board(5, 5)
-final_board, moves = play(board, 'warnsdorff')
-print_board(final_board, moves)
+# board = make_board(5, 5)
+# final_board, moves = play(board, 'warnsdorff')
+# print_board(final_board, moves)
+def main():
+    if len(sys.argv) > 1:
+        board = make_board(int(sys.argv[1]), int(sys.argv[2]))
+        final_board, moves = play(board, sys.argv[3])
+        print_board(final_board, moves)
+    else:
+        print("Run like this: python main.py board_width board_height play_method")
+        return 0
+
+if __name__ == '__main__':
+    main()
